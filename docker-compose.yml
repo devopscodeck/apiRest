@@ -1,0 +1,22 @@
+version: '3'
+services:
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root      
+    ports:
+      - "54322:5432" #observar conflito de portas, no meu caso, usei a ['54322']:5432 ao inves de '5432:5432' para evitar problema local
+    volumes:
+      - ./migration/docker-database-initial.sql:/docker-entrypoint-initdb.d/docker-database-initial.sql   
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "email@email.com"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    ports:
+      - "54321:80"
+    depends_on:
+      - postgres
